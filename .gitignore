@@ -1,0 +1,34 @@
+# Python related
+__pycache__/
+*.py[cod]
+pip-wheel-metadata/
+
+# Environments
+.env
+.venv
+venv/
+env/
+ENV/
+env.bak/
+venv.bak/
+
+# Distribution / packaging
+build/
+_build/
+*.egg-info/
+*.egg
+eggs/
+.eggs/
+dist/
+sdist/
+
+# IDE
+.idea/
+.vscode/
+*.code-workspace
+*~
+*.swp
+*.swo
+
+# Other
+backup/
