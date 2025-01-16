@@ -10,7 +10,7 @@ __all__ = [
 ]
 __version__ = "0.0.1"
 
-__title__ = "Explain NIDS"
+__title__ = "explain_nids"
 __summary__ = "Explain NIDS using different XAI methods."
 __uri__ = "https://github.com/Paippi/"
 
