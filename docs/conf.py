@@ -23,7 +23,7 @@ from <your_package> import (
 # -- Project information -----------------------------------------------------
 
 project = "Package Name"
-copyright = "2021, Bittium Wireless Ltd"
+copyright = ""
 author = __author__
 
 # The full version, including alpha/beta/rc tags
