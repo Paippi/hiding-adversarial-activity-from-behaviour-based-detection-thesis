@@ -10,3 +10,11 @@ build-backend = "setuptools.build_meta"
 
 [tool.black]
 line-length = 79
+
+[project]
+name = "explain_nids"
+dynamic = ["version", "authors", "license", "readme"]
+
+[project.scripts]
+train-cfrl = "explain_nids.cf.train_counterfactual_rl:main"
+train-autoencoder = "explain_nids.encoder:main"

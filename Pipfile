@@ -16,6 +16,7 @@ seaborn = "*"
 jinja2 = "*"
 ray = {extras = ["tune"], version = "*"}
 bayesian-optimization = "==1.4.1"
+alibi = {extras = ["tensorflow"], version = "*"}
 explain-nids = {editable = true, path = "."}
 
 [dev-packages]
@@ -32,3 +33,6 @@ python_version = "3.9"
 
 [build-packages]
 pep517 = "==0.9.1"
+
+[IDE]
+pynvim = "*"

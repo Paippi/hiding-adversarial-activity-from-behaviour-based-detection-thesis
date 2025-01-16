@@ -16,6 +16,85 @@ $ pipenv install .
 $ pipenv install --dev -e .
 ```
 
+## Usage
+
+### train-autoencoder
+
+```
+$ train-autoencoder --help
+usage: train-autoencoder [-h] [-o OUTPUT_PATH] [--overwrite] [--epochs EPOCHS] [--hidden-dim HIDDEN_DIM] [--latent-dim LATENT_DIM] [--num-samples NUM_SAMPLES] trainset_path preprocessor_path
+
+Train autoencoder for cic-ids-2017 dataset
+
+positional arguments:
+  trainset_path
+  preprocessor_path
+
+optional arguments:
+  -h, --help            show this help message and exit
+  -o OUTPUT_PATH, --output-path OUTPUT_PATH
+  --overwrite
+  --epochs EPOCHS       Define the amount of epochs for the autoencoders.
+  --hidden-dim HIDDEN_DIM
+                        Forces the tuning to use certain hidden dimension. If not set will search for the best hidden dim from range (50-200)
+  --latent-dim LATENT_DIM
+                        Forces the tuning to use certain latent dimension. If not set will search for the best latent dim from range (1-50)
+  --num-samples NUM_SAMPLES
+                        Number of times to sample from the hyperparameter search space.
+```
+
+#### Example
+
+```
+$ train-autoencoder data/test.csv models/stage1_ocsvm_scaler.p -o output/CIC-IDS-autoencoder --epochs 200 --hidden-dim 187 --latent-dim 49 --num-samples 1
+```
+
+### train-cfrl
+
+```
+$ train-cfrl --help
+usage: train-cfrl [-h] [--latent-dim LATENT_DIM] [--steps STEPS] [--coeff-sparsity COEFF_SPARSITY] [--coeff-consistency COEFF_CONSISTENCY] [--batch-size BATCH_SIZE]
+                                        [--anomaly-threshold ANOMALY_THRESHOLD] [--classification] [--num-samples NUM_SAMPLES] [--label-column LABEL_COLUMN] [--experiment-name EXPERIMENT_NAME]
+                                        [--output_dir OUTPUT_DIR]
+                                        anomaly_detector_path dataset_path autoencoder_path preprocessor_path
+Train counterfactual reinforcement learning model.
+
+positional arguments:
+  anomaly_detector_path
+                        Path to the anomaly detector pickle file containing any model that gives anomaly score, using function `decision_function`.
+  dataset_path          Path to the dataset used to train and validate the CFRL model.
+  autoencoder_path      Path to the Keras autoencoder
+  preprocessor_path     Path to the preprocessor pickle file.
+
+optional arguments:
+  -h, --help            show this help message and exit
+  --latent-dim LATENT_DIM
+                        Forces the tuning to use certain latent dimension. Needs to be the same as for the autoencoder.
+  --steps STEPS         Set number of steps (default 100_000)
+  --coeff-sparsity COEFF_SPARSITY
+                        If set will force model's to use given coeff sparsity (if not specified will search for best coeff sparsity)
+  --coeff-consistency COEFF_CONSISTENCY
+                        If set will force model's to use given coeff consistency (if not specified will search for best coeff consistency)
+  --batch-size BATCH_SIZE
+  --anomaly-threshold ANOMALY_THRESHOLD
+                        Set the anomaly threshold, ignored if --classification flag set.
+  --classification      Flag that if set, will use classification reward system instead of regression
+  --num-samples NUM_SAMPLES
+                        Number of times to sample from the hyperparameter search space.
+  --label-column LABEL_COLUMN
+                        Column name containing the sample's label/target.
+  --experiment-name EXPERIMENT_NAME
+                        Name for the experiment (default CIC-IDS-2017-explainer)
+  --output_dir OUTPUT_DIR
+                        Path where to save the best result.
+```
+
+#### Example
+
+```
+$ train-cfrl models/stage1_ocsvm.p data/all.csv output/CIC-IDS-autoencoder models/stage1_ocsvm_scaler.p --latent-dim 49 --num-samples 1 --coeff-consistency 0.18 --coeff-sparsity 0.1 --label-column="Label" --classification
+```
+
 ## TODOs
 
 ### Setup Documentation
