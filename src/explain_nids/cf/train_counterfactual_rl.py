@@ -556,7 +556,8 @@ def _create_argparser():
     parser.add_argument(
         "--output_dir",
         default="output",
-        help="Path where to save the best result.",
+        help="Path where to save the best result. The final path will be "
+        "<output dir>/<experiment name>-<regression/classification depending on the task>. (default: output).",
     )
     return parser
 

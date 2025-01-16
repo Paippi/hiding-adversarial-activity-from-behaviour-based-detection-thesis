@@ -421,9 +421,16 @@ def _create_argparser():
     parser.add_argument("trainset_path")
     parser.add_argument("preprocessor_path")
     parser.add_argument(
-        "-o", "--output-path", default="tensorflow/CIC-IDS-autoencoder"
+        "-o",
+        "--output-path",
+        default="output/CIC-IDS-autoencoder",
+        help="Path where the autoencoder will be saved. (Default: output/CIC-IDS-autoencoder)",
     )
-    parser.add_argument("--overwrite", action="store_true")
+    parser.add_argument(
+        "--overwrite",
+        action="store_true",
+        help="If set will overwrite existing autoencoder.",
+    )
     parser.add_argument(
         "--epochs",
         default=200,

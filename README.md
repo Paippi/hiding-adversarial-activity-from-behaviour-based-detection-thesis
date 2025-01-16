@@ -33,7 +33,8 @@ positional arguments:
 optional arguments:
   -h, --help            show this help message and exit
   -o OUTPUT_PATH, --output-path OUTPUT_PATH
-  --overwrite
+                        Path where the autoencoder will be saved. (Default: output/CIC-IDS-autoencoder)
+  --overwrite           If set will overwrite existing autoencoder.
   --epochs EPOCHS       Define the amount of epochs for the autoencoders.
   --hidden-dim HIDDEN_DIM
                         Forces the tuning to use certain hidden dimension. If not set will search for the best hidden dim from range (50-200)
@@ -52,11 +53,10 @@ $ train-autoencoder data/test.csv models/stage1_ocsvm_scaler.p -o output/CIC-IDS
 ### train-cfrl
 
 ```
-$ train-cfrl --help
-usage: train-cfrl [-h] [--latent-dim LATENT_DIM] [--steps STEPS] [--coeff-sparsity COEFF_SPARSITY] [--coeff-consistency COEFF_CONSISTENCY] [--batch-size BATCH_SIZE]
-                                        [--anomaly-threshold ANOMALY_THRESHOLD] [--classification] [--num-samples NUM_SAMPLES] [--label-column LABEL_COLUMN] [--experiment-name EXPERIMENT_NAME]
-                                        [--output_dir OUTPUT_DIR]
-                                        anomaly_detector_path dataset_path autoencoder_path preprocessor_path
+usage: train-cfrl [-h] [--latent-dim LATENT_DIM] [--steps STEPS] [--coeff-sparsity COEFF_SPARSITY] [--coeff-consistency COEFF_CONSISTENCY] [--batch-size BATCH_SIZE] [--anomaly-threshold ANOMALY_THRESHOLD]
+                  [--classification] [--num-samples NUM_SAMPLES] [--label-column LABEL_COLUMN] [--experiment-name EXPERIMENT_NAME] [--output_dir OUTPUT_DIR]
+                  anomaly_detector_path dataset_path autoencoder_path preprocessor_path
+
 Train counterfactual reinforcement learning model.
 
 positional arguments:
@@ -86,7 +86,7 @@ optional arguments:
   --experiment-name EXPERIMENT_NAME
                         Name for the experiment (default CIC-IDS-2017-explainer)
   --output_dir OUTPUT_DIR
-                        Path where to save the best result.
+                        Path where to save the best result. The final path will be <output dir>/<experiment name>-<regression/classification depending on the task>. (default: output).
 ```
 
 #### Example
