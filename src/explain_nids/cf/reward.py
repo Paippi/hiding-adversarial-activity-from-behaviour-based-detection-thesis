@@ -3,7 +3,7 @@
 #
 # Author: Samuli Piippo https://github.com/Paippi/
 
-"""<module docstring>"""
+"""CFRL reward functions"""
 
 # Standard imports
 from typing import Callable, Tuple
