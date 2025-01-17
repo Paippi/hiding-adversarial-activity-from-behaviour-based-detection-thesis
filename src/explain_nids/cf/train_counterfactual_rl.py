@@ -42,6 +42,7 @@ from explain_nids.dataset import (
     get_dataset,
     filter_negative_rows,
     split_dataset,
+    get_benign_indices,
 )
 from explain_nids.encoder import get_autoencoder
 from explain_nids.cf.callback import RewardCallback, LossCallback
