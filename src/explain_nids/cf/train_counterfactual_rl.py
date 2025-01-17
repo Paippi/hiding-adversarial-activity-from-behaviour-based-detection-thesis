@@ -366,7 +366,7 @@ def _main(args) -> tune.ResultGrid:
         random_state=RANDOM_STATE,
     )
 
-    return ray_main(
+    results = ray_main(
         train,
         validation,
         args.steps,
@@ -382,6 +382,23 @@ def _main(args) -> tune.ResultGrid:
         args.coeff_sparsity,
         args.coeff_consistency,
     )
+    anomaly_detector = get_anomaly_detector(
+        args.anomaly_detector_path, args.classification, args.anomaly_threshold
+    )
+    best = results.get_best_result()
+    with best.checkpoint.as_directory() as result_dir:
+        output_dir = os.path.join(
+            args.output_dir,
+            args.experiment_name + "-" + "classification"
+            if args.classification
+            else "regression",
+        )
+        shutil.copytree(result_dir, output_dir, dirs_exist_ok=True)
+        explainer = load_explainer(
+            os.path.join(result_dir, "explainer"),
+            anomaly_detector,
+        )
+    return explainer
 
 
 def ray_main(
@@ -566,21 +583,4 @@ def _create_argparser():
 if __name__ == "__main__":
     parser = _create_argparser()
     args = parser.parse_args()
-    results = _main(args)
-
-    anomaly_detector = get_anomaly_detector(
-        args.anomaly_detector_path, args.classification, args.anomaly_threshold
-    )
-    best = results.get_best_result()
-    with best.checkpoint.as_directory() as result_dir:
-        output_dir = os.path.join(
-            args.output_dir,
-            args.experiment_name + "-" + "classification"
-            if args.classification
-            else "regression",
-        )
-        shutil.copytree(result_dir, output_dir, dirs_exist_ok=True)
-        explainer = load_explainer(
-            os.path.join(result_dir, "explainer"),
-            anomaly_detector,
-        )
+    explainer = _main(args)
