@@ -95,6 +95,49 @@ optional arguments:
 $ train-cfrl models/stage1_ocsvm.p data/all.csv output/CIC-IDS-autoencoder models/stage1_ocsvm_scaler.p --latent-dim 49 --num-samples 1 --coeff-consistency 0.18 --coeff-sparsity 0.1 --label-column="Label" --classification
 ```
 
+### Generating Counterfactuals
+
+```python
+>>> from alibi.saving import load_explainer
+>>> from explain_nids.predict import get_anomaly_detector
+>>> import pandas as pd
+>>> import numpy as np
+>>> import warnings
+>>> from explain_nids.cf.explain import highlight_differences
+>>> anomaly_detector_path = "models/stage1_ocsvm.p"
+>>> classification = True
+>>> anomaly_threshold = -0.0002196942507948895
+>>> explainer_path = "output/CIC-IDS-2017-explainer-classification/explainer"
+>>> anomaly_detector = get_anomaly_detector(
+...     anomaly_detector_path,
+...     classification,
+...     anomaly_threshold,
+... )
+>>> explainer = load_explainer(explainer_path, anomaly_detector)
+>>> samples = pd.read_csv("data/test.csv")
+>>> # Separate benign and malicious samples
+>>> benign_mask = samples["Y"] == "Benign"
+>>> samples.pop("Y")
+>>> benign_samples = samples[benign_mask]
+>>> attack_samples = samples[~benign_mask]
+>>> benign_target = np.array([1])
+>>> attack_target = np.array([0])
+>>> # Ignore feature name warnings...
+>>> with warnings.catch_warnings():
+...     warnings.simplefilter("ignore")
+...     benign_cf = explainer.explain(benign_samples, benign_target)
+>>> with warnings.catch_warnings():
+...     warnings.simplefilter("ignore")
+...     attack_cf = explainer.explain(attack_samples, attack_target)
+>>> # Highlight differences between CF and the original sample (not required but
+>>> # visually more appeling)
+>>> sample_index = 42
+>>> diffs = highlight_differences(attack_cf.orig["X"][sample_index], attack_cf.cf["X"][sample_index], samples.columns)
+>>> diffs.to_html("cf.html")
+```
+
+Now open the cf.html in a web browser to observe the differences.
+
 ## TODOs
 
 ### Setup Documentation

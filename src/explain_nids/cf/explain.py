@@ -10,6 +10,7 @@ from typing import List
 
 # 3rd party imports
 import pandas as pd
+from pandas.io.formats.style import Styler
 
 # Local application/library specific imports
 from explain_nids.typing import NDArrayOfIntsOrFloats
@@ -31,7 +32,7 @@ def highlight_differences(
     original: NDArrayOfIntsOrFloats,
     counterfactual: NDArrayOfIntsOrFloats,
     columns: List[str],
-) -> pd.io.formats.style.Styler:
+) -> Styler:
     """Creates a styler that highlights differences between original and the counterfactual.
 
     Args:
