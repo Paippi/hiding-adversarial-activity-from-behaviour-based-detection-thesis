@@ -138,6 +138,20 @@ $ train-cfrl models/stage1_ocsvm.p data/all.csv output/CIC-IDS-autoencoder model
 
 Now open the cf.html in a web browser to observe the differences.
 
+### Shap Values
+
+First calculate the shap values for the model (this takes a long time).
+
+```
+$ shap-calculate data/test.csv models/stage1_ocsvm.p
+```
+
+Then create different graphs based on needs (see help for more options).
+
+```
+$ shap-draw --waterfall --global --beeswarm
+```
+
 ## TODOs
 
 ### Setup Documentation

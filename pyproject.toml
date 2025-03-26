@@ -18,3 +18,5 @@ dynamic = ["version", "authors", "license", "readme"]
 [project.scripts]
 train-cfrl = "explain_nids.cf.train_counterfactual_rl:main"
 train-autoencoder = "explain_nids.encoder:main"
+shap-calculate = "explain_nids.shap.calculate:main"
+shap-draw = "explain_nids.shap.draw:main"
