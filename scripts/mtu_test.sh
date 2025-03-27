@@ -25,7 +25,7 @@ url=localhost:3000/$url_path
 
 mtu_1500_capture="${output_folder}/curl_mtu_1500.pcap"
 echo "Capturing curl request with MTU 1500 to ${mtu_1500_capture}"
-tshark -i docker0 -f "port 3000" -w $mtu_1500_capture -a duration:2 & sleep 1 && curl $url
+tshark -i docker0 -f "port 3000" -w $mtu_1500_capture -a duration:2 -F pcap & sleep 1 && curl $url
 
 # Sleep just in case
 sleep 5
@@ -34,7 +34,7 @@ sudo ip link set dev docker0 mtu 68
 
 mtu_68_capture="${output_folder}/curl_mtu_68.pcap"
 echo "Capturing curl request with MTU 68 to ${mtu_68_capture}"
-tshark -i docker0 -f "port 3000" -w $mtu_68_capture -a duration:2 & sleep 1 && curl $url
+tshark -i docker0 -f "port 3000" -w $mtu_68_capture -a duration:2 -F pcap & sleep 1 && curl $url
 
 sudo ip link set dev docker0 mtu 1500
 

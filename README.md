@@ -103,7 +103,7 @@ $ train-cfrl models/stage1_ocsvm.p data/all.csv output/CIC-IDS-autoencoder model
 >>> import pandas as pd
 >>> import numpy as np
 >>> import warnings
->>> from explain_nids.cf.explain import highlight_differences
+>>> from explain_nids.compare import highlight_differences
 >>> anomaly_detector_path = "models/stage1_ocsvm.p"
 >>> classification = True
 >>> anomaly_threshold = -0.0002196942507948895
@@ -151,6 +151,34 @@ Then create different graphs based on needs (see help for more options).
 ```
 $ shap-draw --waterfall --global --beeswarm
 ```
+
+### Testing Different MTUs
+
+First create the PCAPs.
+
+```
+$ cd scripts
+$ ./mtu_test.sh
+```
+
+Then convert the PCAPs to flows.
+
+```
+$ ./convert_to_flow.sh
+```
+
+To visualize the difference between the flows use `diff` subcommand (optional)
+
+```
+$ flow-diff output/flows/curl_mtu_1500.pcap_Flow.csv output/flows/curl_mtu_68.pcap_Flow.csv diff --remove-no-diff
+```
+
+To compare the anomaly scores between the two flows use score `score` subcommand
+
+```
+$ flow-diff output/flows/curl_mtu_1500.pcap_Flow.csv output/flows/curl_mtu_68.pcap_Flow.csv score
+```
+
 
 ## TODOs
 
