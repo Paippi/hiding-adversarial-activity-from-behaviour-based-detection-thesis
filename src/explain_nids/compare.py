@@ -134,6 +134,7 @@ def _score_diff(file_a, file_b, args):
     with open(args.anomaly_detector, "rb") as f:
         anomaly_detector = pickle.load(f)
 
+    print(anomaly_detector.feature_names_in_)
     flows_a = convert_columns_for_anomaly_detector(file_a)[
         anomaly_detector.feature_names_in_
     ]
@@ -147,8 +148,12 @@ def _score_diff(file_a, file_b, args):
     result_a = -anomaly_detector.decision_function([sample_a])[0]
     result_b = -anomaly_detector.decision_function([sample_b])[0]
 
-    diff = result_a - result_b
-    print(diff)
+    if args.show_original:
+        print(f"flow a: {result_a}")
+        print(f"flow b: {result_b}")
+
+    diff = abs(result_a - result_b)
+    print(f"distance between: {diff}")
     return diff
 
 
@@ -261,6 +266,11 @@ def _create_argparser():
         "--anomaly-detector",
         default="models/stage1_ocsvm.p",
         help="Path to the anomaly detector .pickle file.",
+    )
+    score_parser.add_argument(
+        "--show-original",
+        action="store_true",
+        help="If set shows the original scores and the difference.",
     )
     score_parser.set_defaults(func=_score_diff)
 
